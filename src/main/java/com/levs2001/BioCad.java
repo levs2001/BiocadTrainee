@@ -22,7 +22,7 @@ public class BioCad {
     private static final String JSON_FILE_PATH = "./json_files/biocad.json";
 
     /**
-     * Print Fibonacci numbers in console.
+     * Print Fibonacci numbers in console. (Task 1)
      *
      * @param fibCount - count of Fibonacci numbers to print
      */
@@ -44,7 +44,7 @@ public class BioCad {
     }
 
     /**
-     * Class Table can be load from json file, it represents our table.
+     * Class Table can be load from json file, it represents our table. (Task 2)
      */
     private static class Table {
         private final Map<String, List<Integer>> rows;
