@@ -14,6 +14,8 @@ import java.util.Map;
  * as the solution must be presented in the same file.
  * So there are some private included classes here.
  * <p>
+ * For Json parsing I use Jackson, I connect it with gradle from maven repository.
+ * <p>
  * Full repository this task: https://github.com/levs2001/BiocadTrainee.git
  */
 public class BioCad {
