@@ -1,5 +1,6 @@
 package com.levs2001;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.Map;
  * as the solution must be presented in the same file.
  * So there are some private included classes here.
  * <p>
- * Repository with Unit tests for this task:
+ * Full repository this task: https://github.com/levs2001/BiocadTrainee.git
  */
 public class BioCad {
     private static final String JSON_FILE_PATH = "./json_files/biocad.json";
@@ -24,27 +25,30 @@ public class BioCad {
      * @param fibCount - count of Fibonacci numbers to print
      */
     private static void printFibonacci(int fibCount) {
+        System.out.println("Fibonacci Task, count of fibonacci nums is " + fibCount + ":");
         int fib1 = 0;
         int fib2 = 1;
         int fybSum = fib1 + fib2;
 
-        for (int i = 2; i < fibCount; i++) {
+        for (int i = 2; i < fibCount + 2; i++) {
             // Printing current fib number from row
             System.out.println(fib1);
             fib1 = fib2;
             fib2 = fybSum;
             fybSum = fib1 + fib2;
         }
+
+        System.out.println();
     }
 
     /**
      * Class Table can be load from json file, it represents our table.
      */
     private static class Table {
-        private final DataClassTable tableContent;
+        private final Map<String, List<Integer>> rows;
 
-        private Table(DataClassTable tableContent) {
-            this.tableContent = tableContent;
+        private Table(Map<String, List<Integer>> rows) {
+            this.rows = rows;
         }
 
         /**
@@ -55,31 +59,28 @@ public class BioCad {
          */
         public static Table load(String jsonFilePath) throws IOException {
             ObjectMapper objectMapper = new ObjectMapper();
-            DataClassTable table = objectMapper.readValue(new File(jsonFilePath), DataClassTable.class);
-            return new Table(table);
+            Map<String, List<Integer>> rows = objectMapper.readValue(new File(jsonFilePath), new TypeReference<>() {
+            });
+            return new Table(rows);
         }
 
         /**
          * Prints table in console.
          */
         public void printInConsole() {
-            for (var row : tableContent.rows.entrySet()) {
+            System.out.println("Table from json: ");
+            System.out.println("[Name: Values]");
+            for (var row : rows.entrySet()) {
                 printRow(row);
             }
         }
 
         private static void printRow(Map.Entry<String, List<Integer>> row) {
-            System.out.println(row.getKey() + ": ");
+            System.out.print(row.getKey() + ": ");
             for (var el : row.getValue()) {
-                System.out.println(el);
+                System.out.print(el + " ");
             }
-        }
-
-        /**
-         * This class used for Jackson json parser.
-         */
-        private static class DataClassTable {
-            public Map<String, List<Integer>> rows;
+            System.out.println();
         }
     }
 
@@ -92,7 +93,7 @@ public class BioCad {
         try {
             table = Table.load(JSON_FILE_PATH);
         } catch (IOException e) {
-            System.out.println("Can't load json file for table, check filename.");
+            System.out.println("Can't load json file for table.");
             return;
         }
         // Second task output:
